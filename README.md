@@ -65,3 +65,33 @@
     - [ ] Challenges faced
     - [ ] Improvements to be made
 - [ ] Post-project
+
+---
+
+#### Problem statement 
+
+I am a photographer who needs a website to showcase my work.
+
+#### User persona
+
+- Photographer
+- Needs a website to share their pictures
+- No coding experience
+- Simple UI to manage their images
+
+#### Concept
+
+- Public user website
+  - Can only view photos 
+  - Limited interaction with the site
+- Admin user website
+  - Able to create, read, update and delete images/ albums
+  - Able to do basic styling of the website
+    - Carousel
+    - Images
+    - Caption
+    - Album name
+    - Order of the photos or album
+- No coding involved as the options will be predefined and provided in input fields   
+   
+  
