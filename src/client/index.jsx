@@ -1,6 +1,8 @@
 import 'babel-polyfill';
 import 'airbnb-browser-shims';
 
+import 'script.js'
+
 // import 'sanitize.css/sanitize.css';
 
 import React from 'react';

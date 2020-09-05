@@ -18,7 +18,7 @@ module.exports = function setup(app) {
 
   app.use(webpackHotMiddleware(compiler));
 
-  // all other requests be handled by UI itself
+  //SPA for public user
   app.get('/share/:user', (req, res) => {
     let trackUser = req.cookies['user'];
     if (!trackUser) {
@@ -29,4 +29,11 @@ module.exports = function setup(app) {
         res.sendFile(resolve(__dirname, '..', '..', '..', 'build-dev', 'client', 'index.html'))
     }
   });
+
+  //SPA for site owner
+  app.get('/user', (req, res) => {
+    res.send('admin site coming soon')
+  })
+
+
 };
