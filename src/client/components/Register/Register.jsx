@@ -15,23 +15,29 @@ class Register extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    console.log(e);
-    // auth.register(this.state , (res) => {
-    //     if (res) {
-    //         this.setState({
-    //             username: '',
-    //             password: '',
-    //         })
-    //         console.log('3');
-    //         this.props.history.push("/user/dashboard")
-    //     } else {
-    //         alert('Try again')
-    //     }
-    // })
+    auth.register(this.state , (res) => {
+        if (res) {
+            this.setState({
+                username: '',
+                password: '',
+            })
+            this.props.history.push("/user/dashboard")
+        } else {
+            alert('Username is taken')
+        }
+    })
   }
 
-  handleChange(e) {
-    let v
+  handleUsername(e) {
+    this.setState({
+        username: e.target.value
+    })
+  }
+
+  handlePassword(e) {
+    this.setState({
+        password: e.target.value
+    })
   }
 
   render() {
@@ -40,18 +46,18 @@ class Register extends React.Component {
           <Col xs={{span: 6, offset: 3}}>
             <h1> Register </h1>
             <Form onSubmit={(e)=>this.handleSubmit(e)}>
-              <Form.Group controlId="username">
+              <Form.Group controlId="formUsername">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
                 type="text"
                 placeholder="Username"
-                onChange={(e)=>this.handleChange(e)}/>
+                onChange={(e)=>this.handleUsername(e)}/>
               </Form.Group>
-              <Form.Group controlId="password">
+              <Form.Group controlId="formBasicPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password"
                               placeholder="Password"
-                              onChange={(e)=>this.handleChange(e)}/>
+                              onChange={(e)=>this.handlePassword(e)}/>
               </Form.Group>
               <Button variant="primary"
                       type="submit"

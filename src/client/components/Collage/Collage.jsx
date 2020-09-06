@@ -26,7 +26,7 @@ class Collage extends React.Component {
   componentDidMount() {
     let album = this.props.album;
     let user = this.state.user;
-    const url = `http://192.168.1.106:3000/api/${user}/${album}`
+    const url = `http://192.168.1.106:3000/api/${user}/album/${album}`
     // get all the pictures
     fetch(url)
       .then(res=>res.json())

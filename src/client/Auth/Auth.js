@@ -2,7 +2,7 @@ import sha256 from 'js-sha256'
 
 class Auth {
     constructor() {
-        this.authenticated = false
+        this.authenticated = true
     }
 
     async login(obj, cb) {
@@ -13,7 +13,6 @@ class Auth {
         try {
             let response = await fetch(url)
             if (response.status == '200') {
-                console.log(response);
                 this.authenticated = true;
                 cb(true)
             } else {
@@ -25,8 +24,28 @@ class Auth {
         }
     }
 
-    register(obj, cb) {
-        cb(true)
+    async register(obj, cb) {
+        const url = `http://192.168.1.106:3000/api/new/user`
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: obj.username,
+                password: sha256(obj.password),
+            })
+        };
+        try {
+            let response = await fetch(url, requestOptions)
+            if (response.ok === true){
+                cb(true)
+            } else {
+                cb(false)
+            }
+        } catch (err) {
+            console.log(err);
+            cb(false)
+        }
     }
 
     logout(cb) {

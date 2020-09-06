@@ -12,13 +12,18 @@ class Landing extends React.Component {
     return (
         <Tab.Container id="left-tabs-example" defaultActiveKey="home">
           <Row>
-            <Col sm={3}>
+            <div style={{position:'fixed',
+                         height: '100vh'}}
+                 className="col-sm-3">
               <Nav variant="pills" className="flex-column">
                 <Nav.Item>
                   <Nav.Link eventKey="home">Home</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link eventKey="about">About</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="contact">Contact</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link eventKey="album-1">Fun</Nav.Link>
@@ -29,18 +34,18 @@ class Landing extends React.Component {
                 <Nav.Item>
                   <Nav.Link eventKey="album-3">Cool</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="contact">Contact</Nav.Link>
-                </Nav.Item>
               </Nav>
-            </Col>
-            <Col sm={9}>
+            </div>
+            <Col sm={{span:9, offset:3}}>
               <Tab.Content>
                 <Tab.Pane eventKey="home">
                   <Showcase/>
                 </Tab.Pane>
                 <Tab.Pane eventKey="about">
                   About
+                </Tab.Pane>
+                <Tab.Pane eventKey="contact">
+                  Contact
                 </Tab.Pane>
                 <Tab.Pane eventKey="album-1">
                   <Collage album="food"/>
@@ -50,9 +55,6 @@ class Landing extends React.Component {
                 </Tab.Pane>
                 <Tab.Pane eventKey="album-3">
                   <Collage album="cool"/>
-                </Tab.Pane>
-                <Tab.Pane eventKey="contact">
-                  Contact
                 </Tab.Pane>
               </Tab.Content>
             </Col>

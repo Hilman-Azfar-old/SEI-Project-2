@@ -46,6 +46,30 @@ module.exports = (dbPoolInstance) => {
                    FROM users
                    WHERE name = $1
                    AND password = $2`
+
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            if (queryResult.rows.length > 0) {
+                callback(null, queryResult.rows)
+            } else {
+                callback(null, null)
+            }
+        }
+    })
+  }
+
+  let newUser = (params, callback) => {
+    const values = [params.username,
+                    params.password];
+
+    const query = `INSERT INTO users
+                   (name, password)
+                   VALUES
+                   ($1, $2)
+                   RETURNING id`
+
     dbPoolInstance.query(query, values, (error, queryResult) => {
         if (error){
             callback(error, null)
@@ -62,5 +86,6 @@ module.exports = (dbPoolInstance) => {
   return {
     getAlbum,
     validate,
+    newUser,
   };
 };

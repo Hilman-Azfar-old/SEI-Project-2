@@ -20,10 +20,26 @@ module.exports = (db) => {
     })
   }
 
+  let newUser = (request, response) => {
+    db.users.newUser(request.body, (err, result) => {
+        if (err) {
+            console.log(err);
+            response.status(400).send('try again')
+        } else {
+                if (result !== null) {
+                response.status(201).send('entity created');
+            } else {
+                response.status(400).send('try again')
+            }
+        }
+    })
+  }
+
   return {
     ping: ping,
     album,
     validate,
+    newUser,
   }
 
 };

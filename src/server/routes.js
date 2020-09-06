@@ -7,7 +7,9 @@ module.exports = (app, db) => {
 
   app.get('/api/:user/:pass', users.validate)
 
-  app.get('/api/:user/:album', users.album)
+  app.get('/api/:user/album/:album', users.album)
+
+  app.post('/api/new/user', users.newUser)
 
   app.get('/api/*', (req, res) => {
     res.status(404).send("Nothing to see here")
