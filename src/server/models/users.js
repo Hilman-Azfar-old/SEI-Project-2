@@ -38,8 +38,29 @@ module.exports = (dbPoolInstance) => {
     });
   };
 
+  let validate = (params, callback) => {
+    const values = [params.user,
+                    params.pass];
+
+    const query = `SELECT id
+                   FROM users
+                   WHERE name = $1
+                   AND password = $2`
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            if (queryResult.rows.length > 0) {
+                callback(null, queryResult.rows)
+            } else {
+                callback(null, null)
+            }
+        }
+    })
+  }
 
   return {
     getAlbum,
+    validate,
   };
 };
