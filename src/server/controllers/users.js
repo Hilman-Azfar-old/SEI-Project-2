@@ -35,11 +35,22 @@ module.exports = (db) => {
     })
   }
 
+  let profile = (request, response) => {
+    db.users.profile(request.params, (err, result)=>{
+        if (result) {
+            response.send(result)
+        } else {
+            response.status(500).send('No entry')
+        }
+    })
+  }
+
   return {
     ping: ping,
     album,
     validate,
     newUser,
+    profile,
   }
 
 };

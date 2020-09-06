@@ -3,6 +3,7 @@ import React from 'react';
 import { Col, Row, Tab, Nav } from 'react-bootstrap'
 import Showcase from '../Carousel/Carousel'
 import Collage from '../Collage/Collage'
+import About from '../About/About'
 
 class Landing extends React.Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class Landing extends React.Component {
                   <Showcase/>
                 </Tab.Pane>
                 <Tab.Pane eventKey="about">
-                  About
+                  <About />
                 </Tab.Pane>
                 <Tab.Pane eventKey="contact">
                   Contact

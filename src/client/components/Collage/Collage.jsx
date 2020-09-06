@@ -18,7 +18,6 @@ class Collage extends React.Component {
         let currentUser = params.split('/')[2]
         return currentUser;
     })(),
-        loggedIn : false,
         album: null,
     }
   }
@@ -31,9 +30,9 @@ class Collage extends React.Component {
     fetch(url)
       .then(res=>res.json())
       .then(res=> {
-        this.setState(()=>({
+        this.setState({
             album: res
-        }));
+        })
       })
       .catch(err=>console.log(err))
   }

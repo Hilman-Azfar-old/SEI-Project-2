@@ -5,18 +5,27 @@ import { Row, Col } from 'react-bootstrap'
 import { Link, Switch } from 'react-router-dom'
 import ProtectedRoute from '../../Auth/ProtectedRoute'
 
+import About from '../PrefillForms/About'
+
 class Dashboard extends React.Component {
     constructor(props) {
         super(props)
-    }
 
-    render() {
-        let style = {
-            position: 'fixed',
-            height: '100vh',
-        }
-
-        let db = [
+        this.state = {
+            user : [
+            {
+                about: {
+                    name: 'Hilman',
+                    description: "long long long long"
+                },
+            },
+            {
+                contact: {
+                    name: 'Hilman',
+                    number: '123456789',
+                    email: 'here@there',
+                }
+            },
             {
                 album: 'pen'
             },
@@ -26,58 +35,59 @@ class Dashboard extends React.Component {
             {
                 album: 'scissors'
             }
-        ]
+            ],
+            routes: null
+        }
+    }
 
-        let profile = [
-            {
-                profile: {
-                    name : 'Hilman'
-                },
-                description: "long long long long"
-            },
-            {
-                contact: {
-                    name : 'Hilman',
-                    number: '123456789',
-                    email: 'here@there',
-                }
+    componentDidMount() {
+        let routes = this.state.user.map((item) => {
+            let id = Object.keys(item)[0];
+            let exact = true;
+            let element;
+            switch(id) {
+                case 'about':
+                    element = <About about={item}/>
+                    break
+                case 'contact':
+                    element = <h1> {id} </h1>
+                    break
+                case 'album':
+                    id = item[id]
+                    element = <h1> {id} </h1>
+                    break
             }
-        ]
 
-        // create routes dynamically from db
-        let albumRoutes = db.map(( item ) => {
-            let album = item.album;
-          return {
-            id: album,
-            path: `/user/dashboard/${album}`,
-            exact: true,
-            display: () => <div> {album} </div>
-          }
-        })
-
-        let profileRoutes = profile.map(( item ) => {
-            let ext = Object.keys(item)[0]
-            console.log(ext);
-            return {
-              id: ext,
-              path: `/user/dashboard/${ext}`,
-              exact: true,
-              display: () => <div> {ext} </div>
+            let output = {
+                id: id,
+                path: `/user/dashboard/${id}`,
+                exact: exact,
+                display: () => element
             }
+            return output
         })
+        this.setState({
+            routes: routes
+        })
+    }
 
-        let routes = [...profileRoutes, ...albumRoutes];
-        console.log(albumRoutes);
+    render() {
+        let style = {
+            position: 'fixed',
+            height: '100vh',
+        }
 
         return (
             <div>
-                <div style={style}
+                { this.state.routes ?
+                (<div>
+                    <div style={style}
                          className="col-sm-3">
                     <ul style={{ listStyleType: "none", padding: 0 }}>
                         <li>
                             <Link to="/user/dashboard">dashboard</Link>
                         </li>
-                    {routes.map((route, index) => (
+                    {this.state.routes.map((route, index) => (
                         <li key={index}>
                             <Link to={route.path}>{route.id}</Link>
                         </li>
@@ -98,7 +108,7 @@ class Dashboard extends React.Component {
                                 path="/user/dashboard"
                                 component={() =>(<div> dashboard </div>)}
                             />
-                            {routes.map((route, index) => (
+                            {this.state.routes.map((route, index) => (
                                 <ProtectedRoute
                                     key={index}
                                     exact={route.exact}
@@ -109,6 +119,9 @@ class Dashboard extends React.Component {
                         </Switch>
                     </Col>
                 </Row>
+                </div>)
+                : (<h4> rendering </h4>)
+            }
             </div>
         );
     }

@@ -83,9 +83,34 @@ module.exports = (dbPoolInstance) => {
     })
   }
 
+  let profile = (params, callback) => {
+    const values = [params.user];
+
+    const query = `SELECT description
+                   FROM profiles
+                   WHERE user_id = (
+                     SELECT id
+                     FROM users
+                     WHERE name = $1
+                   )`
+
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            if (queryResult.rows.length > 0) {
+                callback(null, queryResult.rows)
+            } else {
+                callback(null, null)
+            }
+        }
+    })
+  }
+
   return {
     getAlbum,
     validate,
     newUser,
+    profile,
   };
 };

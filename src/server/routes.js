@@ -5,9 +5,11 @@ module.exports = (app, db) => {
 // api routes here to do CRUD operations
   app.get('/api/test', users.ping)
 
-  app.get('/api/:user/:pass', users.validate)
+  app.get('/api/login/:user/:pass', users.validate)
 
   app.get('/api/:user/album/:album', users.album)
+
+  app.get('/api/:user/profile', users.profile)
 
   app.post('/api/new/user', users.newUser)
 
