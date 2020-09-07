@@ -13,6 +13,10 @@ module.exports = (app, db) => {
 
   app.post('/api/new/user', users.newUser)
 
+  app.post('/api/new/album', users.newAlbum)
+
+  app.get('/api/:user/object', users.object)
+
   app.get('/api/*', (req, res) => {
     res.status(404).send("Nothing to see here")
   })

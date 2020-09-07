@@ -17,7 +17,7 @@ class About extends React.Component {
   }
 
   componentDidMount() {
-    const url = `http://192.168.1.106:3000/api/${this.state.user}/profile`
+    const url = `http://localhost:3000/api/${this.state.user}/profile`
     fetch(url)
       .then(res=>res.json())
       .then(res=>{

@@ -45,12 +45,39 @@ module.exports = (db) => {
     })
   }
 
+  let object = (request, response) => {
+    db.users.object(request.params, (err, result)=>{
+        if (result) {
+            response.send(result)
+        } else {
+            response.status(500).send('No entry')
+        }
+    })
+  }
+
+  let newAlbum = (request, response) => {
+    db.users.newAlbum(request.body, (err, result) => {
+        if (err) {
+            console.log(err);
+            response.status(400).send('try again')
+        } else {
+                if (result !== null) {
+                response.status(201).send('entity created');
+            } else {
+                response.status(400).send('try again')
+            }
+        }
+    })
+  }
+
   return {
     ping: ping,
     album,
     validate,
     newUser,
     profile,
+    object,
+    newAlbum,
   }
 
 };

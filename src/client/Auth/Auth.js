@@ -2,18 +2,20 @@ import sha256 from 'js-sha256'
 
 class Auth {
     constructor() {
-        this.authenticated = true
+        this.authenticated = false
+        this.currentUser = null
     }
 
     async login(obj, cb) {
         // call db and validate
         // using ajax
         // if validated get session cookie
-        const url = `http://192.168.1.106:3000/api/login/${obj.username}/${sha256(obj.password)}`
+        const url = `http://localhost:3000/api/login/${obj.username}/${sha256(obj.password)}`
         try {
             let response = await fetch(url)
             if (response.status == '200') {
                 this.authenticated = true;
+                this.currentUser = obj.username;
                 cb(true)
             } else {
                 throw new Error(response.status + ' Bad auth')
@@ -25,7 +27,7 @@ class Auth {
     }
 
     async register(obj, cb) {
-        const url = `http://192.168.1.106:3000/api/new/user`
+        const url = `http://localhost:3000/api/new/user`
 
         const requestOptions = {
             method: 'POST',
@@ -38,6 +40,8 @@ class Auth {
         try {
             let response = await fetch(url, requestOptions)
             if (response.ok === true){
+                this.authenticated = true;
+                this.currentUser = obj.username
                 cb(true)
             } else {
                 cb(false)
@@ -59,4 +63,9 @@ class Auth {
     }
 }
 
+        // if (this.currentUser === user && this.authenticated) {
+        //     return true
+        // } else {
+        //     return false
+        // }
 export default new Auth();

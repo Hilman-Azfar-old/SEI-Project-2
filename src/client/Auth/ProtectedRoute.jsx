@@ -1,21 +1,22 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, useParams } from 'react-router-dom'
 import auth from './Auth'
 import PropTypes from 'prop-types'
 
-function ProtectedRoute({ component: Component, ...rest}) {
+function ProtectedRoute({ children, ...rest }) {
+    let { user } = useParams();
     return (
         <Route
             {...rest}
-            render={ props  => {
+            render={({ location }) =>{
                 if (auth.isAuthenticated()) {
-                    return <Component {...props} />
+                    return (children)
                 } else {
-                    return <Redirect
+                    return (<Redirect
                     to = {{
                         pathname: "/user/login"
                     }}
-                  />
+                  />)
                 }
             }}
         />

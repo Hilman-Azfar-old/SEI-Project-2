@@ -17,11 +17,12 @@ class Register extends React.Component {
 
     auth.register(this.state , (res) => {
         if (res) {
+            let path = `/user/${this.state.username}/dashboard`
             this.setState({
                 username: '',
                 password: '',
             })
-            this.props.history.push("/user/dashboard")
+            this.props.history.push(path)
         } else {
             alert('Username is taken')
         }

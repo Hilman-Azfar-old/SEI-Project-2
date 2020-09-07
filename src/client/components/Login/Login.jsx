@@ -18,11 +18,12 @@ class Login extends React.Component {
 
     auth.login(this.state , (res) => {
         if (res) {
+            let path = `/user/${this.state.username}/dashboard`
             this.setState({
                 username: '',
                 password: '',
             })
-            this.props.history.push("/user/dashboard")
+            this.props.history.push(path)
         } else {
             alert('Try again')
         }

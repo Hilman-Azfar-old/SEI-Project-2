@@ -107,10 +107,60 @@ module.exports = (dbPoolInstance) => {
     })
   }
 
+  let object = (params, callback) => {
+    const values = [params.user];
+
+    const query = `SELECT *
+                   FROM gallery
+                   WHERE user_id =
+                   (
+                    SELECT id
+                    FROM users
+                    WHERE name = $1
+                   )`
+
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            if (queryResult.rows.length > 0) {
+                callback(null, queryResult.rows)
+            } else {
+                callback(null, null)
+            }
+        }
+    })
+  }
+
+  let newAlbum = (params, callback) => {
+    const values = [params.username,
+                    params.title];
+
+    const query = `INSERT INTO gallery
+                   (user_id, album)
+                   VALUES
+                   ((SELECT id FROM users WHERE name = $1), $2)
+                   RETURNING id`
+
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            if (queryResult.rows.length > 0) {
+                callback(null, queryResult.rows)
+            } else {
+                callback(null, null)
+            }
+        }
+    })
+  }
+
   return {
     getAlbum,
     validate,
     newUser,
     profile,
+    object,
+    newAlbum,
   };
 };

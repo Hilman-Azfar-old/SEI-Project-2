@@ -38,16 +38,33 @@ class Dashboard extends React.Component {
             ],
             routes: null
         }
+
+        this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    }
+
+    handleDescriptionChange(value) {
+        let key = 'about';
+        this.setState(prevState => ({
+                user: prevState.user.map( item =>
+            Object.keys(item)[0] === key ? { about: {...item.about, description: value}} : item
+                )
+            })
+        )
+        console.log(this.state.user, '-- dash');
     }
 
     componentDidMount() {
+
+        //get user
+
         let routes = this.state.user.map((item) => {
             let id = Object.keys(item)[0];
             let exact = true;
             let element;
             switch(id) {
                 case 'about':
-                    element = <About about={item}/>
+                    element = <About about={item}
+                                     onDescriptionChange={this.handleDescriptionChange}/>
                     break
                 case 'contact':
                     element = <h1> {id} </h1>
