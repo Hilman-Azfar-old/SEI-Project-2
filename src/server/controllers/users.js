@@ -70,6 +70,22 @@ module.exports = (db) => {
     })
   }
 
+  let deleteAlbum = (request, response) => {
+    console.log(request.params);
+    db.users.deleteAlbum(request.params, (err, result) => {
+        if (err) {
+            console.log(err);
+            response.status(400).send('try again')
+        } else {
+                if (result !== null) {
+                response.status(200).send('entity deleted');
+            } else {
+                response.status(400).send('try again')
+            }
+        }
+    })
+  }
+
   return {
     ping: ping,
     album,
@@ -78,6 +94,7 @@ module.exports = (db) => {
     profile,
     object,
     newAlbum,
+    deleteAlbum,
   }
 
 };

@@ -23,8 +23,8 @@ function ProtectedRoute({ children, ...rest }) {
     )
 }
 
-ProtectedRoute.propTypes = {
-    component: PropTypes.any.isRequired,
-}
+// ProtectedRoute.propTypes = {
+//     component: PropTypes.any.isRequired,
+// }
 
 export default ProtectedRoute;

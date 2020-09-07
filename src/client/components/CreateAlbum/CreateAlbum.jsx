@@ -31,6 +31,7 @@ class CreateAlbum extends React.Component {
               <Form.Group controlId="formTitle">
                 <Form.Label>Title</Form.Label>
                 <Form.Control
+                value={this.props.value}
                 type="text"
                 placeholder="my new album ~"
                 onChange={this.handleTitle}/>
@@ -43,7 +44,7 @@ class CreateAlbum extends React.Component {
             </Form>
           </Col>
           <Row>
-            <Link to="/user/:user/dashboard">
+            <Link to={`/user/${this.props.user}/dashboard`}>
                 <Button variant="primary">Back</Button>
             </Link>
           </Row>

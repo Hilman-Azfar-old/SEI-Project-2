@@ -4,6 +4,8 @@ import { InputGroup, FormControl, Col, Button, Row } from 'react-bootstrap'
 import ProtectedRoute from '../../Auth/ProtectedRoute'
 
 import CreateAlbum from '../CreateAlbum/CreateAlbum'
+import EditAlbum from '../EditAlbum/EditAlbum'
+import Logout from '../Logout/Logout'
 
 class Dashboard extends React.Component {
   constructor(props){
@@ -29,7 +31,11 @@ class Dashboard extends React.Component {
     const url = `http://localhost:3000/api/${this.state.user}/object`
     fetch(url)
     .then(res=>res.json())
-    .then(res=>console.log(res))
+    .then(res=>{
+        this.setState({
+            albums: res
+        })
+    })
     .catch(err=>console.log(err))
   }
 
@@ -46,13 +52,21 @@ class Dashboard extends React.Component {
         })
     };
     try {
+        if (this.state.newTitle === '') {
+            throw new Error('Enter a name')
+        }
         let response = await fetch(url, requestOptions)
         if (response.status == '201') {
-            alert('created ', this.state.newTitle)
+            this.setState(prevState => ({
+                albums: [...prevState.albums, {album: this.state.newTitle}],
+                newTitle: '',
+            }))
+            alert('created album')
         } else {
             throw new Error(response.status)
         }
     } catch(err) {
+        console.log(err);
         alert('Unable to create album')
     }
   }
@@ -61,8 +75,33 @@ class Dashboard extends React.Component {
     e.preventDefault();
   }
 
-  delete(e) {
+  async delete(e) {
     e.preventDefault();
+    let album = e.target.name
+
+    const url = `http://localhost:3000/api/${this.state.user}/album/${album}`
+    const requestOptions = {
+        method: 'DELETE',
+        // headers: { 'Content-Type': 'application/json' },
+        // body: JSON.stringify({
+        //     username: this.state.user,
+        //     title: this.state.newTitle,
+        }
+    fetch(url, requestOptions)
+    .then(res=>{
+        if(res.status === 200) {
+            this.setState(prevState=> ({
+                albums: prevState.albums.filter(item=>{
+                    return item.album !== album
+                })
+            }))
+            console.log(this.state.albums);
+        } else {
+            console.log(res);
+            throw new Error("try again")
+        }
+    })
+    .catch(err=>console.log(err))
   }
 
   handleChange(e) {
@@ -90,16 +129,22 @@ class Dashboard extends React.Component {
                         <Button variant="primary">Edit</Button>
                         </Link>
                     </nav>
+                    <Logout />
                 </Col>
                 </Route>
                 <ProtectedRoute exact
                                 path="/user/:user/dashboard/create">
                     <CreateAlbum onTitleChange={this.handleChange}
-                                 onCreate={this.create}/>
+                                 onCreate={this.create}
+                                 value={this.state.newTitle}
+                                 user={this.state.user}/>
                 </ProtectedRoute>
-                <Route exact path="/user/:user/dashboard/edit">
-                    <h1> Edit </h1>
-                </Route>
+                <ProtectedRoute exact
+                                path="/user/:user/dashboard/edit">
+                    <EditAlbum albums={this.state.albums}
+                               onDelete={this.delete}
+                               user={this.state.user}/>
+                </ProtectedRoute>
             </Switch>
             </Row>
         </div>

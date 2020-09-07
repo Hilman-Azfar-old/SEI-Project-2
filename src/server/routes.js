@@ -15,6 +15,8 @@ module.exports = (app, db) => {
 
   app.post('/api/new/album', users.newAlbum)
 
+  app.delete('/api/:user/album/:album', users.deleteAlbum)
+
   app.get('/api/:user/object', users.object)
 
   app.get('/api/*', (req, res) => {

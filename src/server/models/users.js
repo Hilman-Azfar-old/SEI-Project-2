@@ -110,7 +110,7 @@ module.exports = (dbPoolInstance) => {
   let object = (params, callback) => {
     const values = [params.user];
 
-    const query = `SELECT *
+    const query = `SELECT album
                    FROM gallery
                    WHERE user_id =
                    (
@@ -155,6 +155,29 @@ module.exports = (dbPoolInstance) => {
     })
   }
 
+    let deleteAlbum = (params, callback) => {
+    const values = [params.user,
+                    params.album];
+
+    const query = `DELETE FROM gallery
+                   WHERE user_id =
+                   (SELECT id FROM users WHERE name = $1)
+                   AND album = $2
+                   RETURNING id`
+
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            if (queryResult.rows.length > 0) {
+                callback(null, queryResult.rows)
+            } else {
+                callback(null, null)
+            }
+        }
+    })
+  }
+
   return {
     getAlbum,
     validate,
@@ -162,5 +185,6 @@ module.exports = (dbPoolInstance) => {
     profile,
     object,
     newAlbum,
+    deleteAlbum,
   };
 };
