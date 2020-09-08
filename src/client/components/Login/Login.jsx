@@ -44,7 +44,7 @@ class Login extends React.Component {
 
   render() {
     return (
-        <Container>
+        <div style={{position: "relative", top: "30vh"}}>
           <Col xs={{span: 6, offset: 3}}>
             <h1> Login </h1>
             <Form onSubmit={(e)=>this.handleSubmit(e)}>
@@ -65,13 +65,14 @@ class Login extends React.Component {
                 <Col md={4}>
                   <Button variant="primary"
                           type="submit"
-                          mx="auto">
-                    Submit
+                          mx="auto"
+                          block>
+                        Log in
                   </Button>
                   </Col>
                   <Col md={{span:4, offset: 4}}>
                   <Link to="/user/register">
-                    <Button variant="primary"
+                    <Button variant="secondary"
                           block>
                         Register
                     </Button>
@@ -80,7 +81,7 @@ class Login extends React.Component {
               </Row>
             </Form>
           </Col>
-        </Container>
+        </div>
     );
   }
 }

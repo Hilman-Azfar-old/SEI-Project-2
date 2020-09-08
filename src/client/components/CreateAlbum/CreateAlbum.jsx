@@ -3,6 +3,7 @@ import auth from '../../Auth/Auth'
 import { Link } from 'react-router-dom'
 import { Row, Col, Container, Form, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import Logout from '../Logout/Logout'
 
 class CreateAlbum extends React.Component {
   constructor(props){
@@ -22,32 +23,24 @@ class CreateAlbum extends React.Component {
 
   render() {
     return (
-        <Container>
-          <Col xs={{span: 6, offset: 3}}>
-            <div className="text-center">
-            <h1> Create Album </h1>
-            </div>
-            <Form onSubmit={this.handleCreate}>
-              <Form.Group controlId="formTitle">
-                <Form.Label>Title</Form.Label>
+        <Container className="fixed-bottom p-4">
+          <Form onSubmit={this.handleCreate}>
+          <Row>
+          <Col sm={{span:6, offset: 2}}>
                 <Form.Control
                 value={this.props.value}
-                type="text"
                 placeholder="my new album ~"
                 onChange={this.handleTitle}/>
-              </Form.Group>
+          </Col>
+          <Col sm={2}>
               <Button variant="primary"
                       type="submit"
                       mx="auto">
                 Create
               </Button>
-            </Form>
           </Col>
-          <Row>
-            <Link to={`/user/${this.props.user}/dashboard`}>
-                <Button variant="primary">Back</Button>
-            </Link>
           </Row>
+          </Form>
         </Container>
     );
   }

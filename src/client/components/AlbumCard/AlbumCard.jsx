@@ -16,10 +16,11 @@ class AlbumCard extends React.Component {
     let { data } = this.props;
     return (
         <div>
-             <Toast onClose={this.handleDelete}>
+            <Toast onClose={this.handleDelete}>
               <Toast.Header>
-                <strong className="mr-auto">{ data }</strong>
+                <strong className="mr-auto">{data.album}</strong>
               </Toast.Header>
+              <Toast.Body>{data.urls.length} items</Toast.Body>
             </Toast>
         </div>
     );

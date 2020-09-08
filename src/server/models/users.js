@@ -110,14 +110,15 @@ module.exports = (dbPoolInstance) => {
   let object = (params, callback) => {
     const values = [params.user];
 
-    const query = `SELECT album
-                   FROM gallery
-                   WHERE user_id =
-                   (
-                    SELECT id
-                    FROM users
-                    WHERE name = $1
-                   )`
+    const query = `SELECT gallery.album,
+                   STRING_AGG( images.img_url, ',' ) urls
+                   FROM users
+                   INNER JOIN gallery
+                   ON users.id = gallery.user_id
+                   LEFT JOIN images
+                   ON gallery.id = images.album_id
+                   WHERE users.name = $1
+                   GROUP BY gallery.album`
 
     dbPoolInstance.query(query, values, (error, queryResult) => {
         if (error){

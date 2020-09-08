@@ -13,20 +13,6 @@ import Dashboard from './components/Dashboard/DashboardV2'
 function App() {
     return (
         <BrowserRouter>
-            <nav>
-                <h3> For debug </h3>
-                <ul>
-                    <li>
-                        <Link to="/user/login">Login</Link>
-                    </li>
-                    <li>
-                        <Link to="/user/register">Register</Link>
-                    </li>
-                    <li>
-                        <Link to="/user/user1/dashboard">Dashboard</Link>
-                    </li>
-                </ul>
-            </nav>
             <Switch>
                 <Route exact path='/user/login' component={Login} />
                 <Route exact path='/user/register' component={Register} />
@@ -36,7 +22,7 @@ function App() {
                 <Route path='/share/:name'>
                     <Landing />
                 </Route>
-               <Route path='*' render={() => <div>404</div>} />
+               <Route path='*' component={Login} />
             </Switch>
         </BrowserRouter>
     );

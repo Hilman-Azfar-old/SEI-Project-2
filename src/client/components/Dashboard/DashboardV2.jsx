@@ -1,9 +1,14 @@
 import React from 'react';
 import { Route, Switch, Link } from 'react-router-dom'
-import { InputGroup, FormControl, Col, Button, Row } from 'react-bootstrap'
+import { InputGroup,
+         FormControl,
+         Col,
+         Button,
+         Row,
+         Navbar,
+         Container, } from 'react-bootstrap'
 import ProtectedRoute from '../../Auth/ProtectedRoute'
 
-import CreateAlbum from '../CreateAlbum/CreateAlbum'
 import EditAlbum from '../EditAlbum/EditAlbum'
 import Logout from '../Logout/Logout'
 
@@ -25,6 +30,7 @@ class Dashboard extends React.Component {
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -32,8 +38,18 @@ class Dashboard extends React.Component {
     fetch(url)
     .then(res=>res.json())
     .then(res=>{
+
+        const userData = res.map(item=> {
+            if (item.urls !== null) {
+                item.urls = item.urls.split(',')
+            } else {
+                item.urls = []
+            }
+            return item
+        })
+
         this.setState({
-            albums: res
+            albums: userData
         })
     })
     .catch(err=>console.log(err))
@@ -51,6 +67,7 @@ class Dashboard extends React.Component {
             title: this.state.newTitle,
         })
     };
+
     try {
         if (this.state.newTitle === '') {
             throw new Error('Enter a name')
@@ -58,10 +75,11 @@ class Dashboard extends React.Component {
         let response = await fetch(url, requestOptions)
         if (response.status == '201') {
             this.setState(prevState => ({
-                albums: [...prevState.albums, {album: this.state.newTitle}],
+                albums: prevState.albums.length ?
+                    [...prevState.albums, {[this.state.newTitle]: []}]
+                    : [{[this.state.newTitle]: []}],
                 newTitle: '',
             }))
-            alert('created album')
         } else {
             throw new Error(response.status)
         }
@@ -80,22 +98,18 @@ class Dashboard extends React.Component {
     let album = e.target.name
 
     const url = `http://localhost:3000/api/${this.state.user}/album/${album}`
+    // need to delete from images too
     const requestOptions = {
         method: 'DELETE',
-        // headers: { 'Content-Type': 'application/json' },
-        // body: JSON.stringify({
-        //     username: this.state.user,
-        //     title: this.state.newTitle,
         }
+
     fetch(url, requestOptions)
     .then(res=>{
         if(res.status === 200) {
             this.setState(prevState=> ({
-                albums: prevState.albums.filter(item=>{
-                    return item.album !== album
-                })
+                albums: prevState.albums.filter(obj=>Object.keys(obj)[0] !== album)
             }))
-            console.log(this.state.albums);
+            console.log(this.state.albums, '-- deleted');
         } else {
             console.log(res);
             throw new Error("try again")
@@ -110,43 +124,37 @@ class Dashboard extends React.Component {
     })
   }
 
+  handleClick(){
+    console.log(this.state.albums);
+  }
+
   render() {
     return (
         <div>
-            <Row>
-            <Switch>
-                <Route exact path="/user/:user/dashboard">
-                <Col className="text-center" sm={{span: 6, offset: 3}}>
-                    <h4>What would you like to do?</h4>
-                    <nav className="m-4 justify-content-around d-flex">
-                        <Link to={`/share/${this.state.user}`}>
-                        <Button variant="primary">View</Button>
-                        </Link>
-                        <Link to={`/user/${this.state.user}/dashboard/create`}>
-                        <Button variant="primary">Create</Button>
-                        </Link>
-                        <Link to={`/user/${this.state.user}/dashboard/edit`}>
-                        <Button variant="primary">Edit</Button>
-                        </Link>
-                    </nav>
+            <Navbar bg="dark" variant="dark" fixed="top">
+                <Navbar.Brand href="#home">
+                    Gallery
+                </Navbar.Brand>
+                <Button onClick={this.handleClick}>
+                State Checker
+                </Button>
+                <Navbar.Collapse className="justify-content-end">
+                <Navbar.Text className="mr-3">
+                    Signed in as: {this.state.user}
+                </Navbar.Text>
                     <Logout />
-                </Col>
-                </Route>
-                <ProtectedRoute exact
-                                path="/user/:user/dashboard/create">
-                    <CreateAlbum onTitleChange={this.handleChange}
-                                 onCreate={this.create}
-                                 value={this.state.newTitle}
-                                 user={this.state.user}/>
-                </ProtectedRoute>
-                <ProtectedRoute exact
-                                path="/user/:user/dashboard/edit">
-                    <EditAlbum albums={this.state.albums}
-                               onDelete={this.delete}
-                               user={this.state.user}/>
-                </ProtectedRoute>
-            </Switch>
-            </Row>
+                </Navbar.Collapse>
+            </Navbar>
+
+        <Container className="mt-5 pt-5" id="Dashboard">
+          <EditAlbum albums={this.state.albums}
+                     onDelete={this.delete}
+                     user={this.state.user}
+
+                     onTitleChange={this.handleChange}
+                     onCreate={this.create}
+                     value={this.state.newTitle}/>
+        </Container>
         </div>
     );
   }

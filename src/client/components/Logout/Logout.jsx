@@ -1,6 +1,8 @@
 import React from 'react';
 import auth from '../../Auth/Auth'
 import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+
 
 class Logout extends React.Component {
   constructor(props) {
@@ -8,15 +10,18 @@ class Logout extends React.Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick(e){
-    alert('ping')
+  handleClick(){
+    auth.logout()
   }
 
   render() {
     return (
-            <Button variant="primary" onChange={this.handleClick}>
+            <Link to="/user/login" onClick={this.handleClick}>
+            <Button variant="secondary"
+                    size="sm">
                 Logout
             </Button>
+            </Link>
     );
   }
 }

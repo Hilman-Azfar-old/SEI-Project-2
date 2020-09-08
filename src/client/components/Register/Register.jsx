@@ -1,7 +1,8 @@
 import React from 'react';
 import auth from '../../Auth/Auth'
-import { Col, Container, Form, Button } from 'react-bootstrap'
+import { Row, Col, Container, Form, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 class Register extends React.Component {
   constructor(props){
@@ -43,7 +44,7 @@ class Register extends React.Component {
 
   render() {
     return (
-        <Container>
+        <div style={{position: "relative", top: "30vh"}}>
           <Col xs={{span: 6, offset: 3}}>
             <h1> Register </h1>
             <Form onSubmit={(e)=>this.handleSubmit(e)}>
@@ -60,14 +61,27 @@ class Register extends React.Component {
                               placeholder="Password"
                               onChange={(e)=>this.handlePassword(e)}/>
               </Form.Group>
+            <Row>
+            <Col md={4}>
               <Button variant="primary"
                       type="submit"
-                      mx="auto">
-                Submit
+                      mx="auto"
+                      block>
+                    Sign up
               </Button>
+            </Col>
+            <Col md={{span:4, offset: 4}}>
+              <Link to="/user/login">
+                <Button variant="secondary"
+                        block>
+                    Have an account?
+                </Button>
+              </Link>
+            </Col>
+            </Row>
             </Form>
           </Col>
-        </Container>
+        </div>
     );
   }
 }
