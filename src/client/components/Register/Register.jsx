@@ -1,6 +1,9 @@
 import React from 'react';
 import auth from '../../Auth/Auth'
-import { Row, Col, Container, Form, Button } from 'react-bootstrap'
+import { Row, Col,
+         Container,
+         Form, Button,
+         Navbar } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
@@ -44,6 +47,12 @@ class Register extends React.Component {
 
   render() {
     return (
+        <div>
+        <Navbar bg="dark" variant="dark" fixed="top">
+            <Navbar.Brand>
+                Gallery
+            </Navbar.Brand>
+        </Navbar>
         <div style={{position: "relative", top: "30vh"}}>
           <Col xs={{span: 6, offset: 3}}>
             <h1> Register </h1>
@@ -81,6 +90,7 @@ class Register extends React.Component {
             </Row>
             </Form>
           </Col>
+        </div>
         </div>
     );
   }

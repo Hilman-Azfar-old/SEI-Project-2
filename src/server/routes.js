@@ -15,7 +15,11 @@ module.exports = (app, db) => {
 
   app.post('/api/new/album', users.newAlbum)
 
-  app.delete('/api/:user/album/:album', users.deleteAlbum)
+  app.post('/api/new/picture', users.newAlbumPicture)
+
+  app.delete('/api/:user/album/:album_id', users.deleteAlbum)
+
+  app.delete('/api/del/picture', users.deletePicture)
 
   app.get('/api/:user/object', users.object)
 

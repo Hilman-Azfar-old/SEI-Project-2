@@ -62,7 +62,7 @@ module.exports = (db) => {
             response.status(400).send('try again')
         } else {
                 if (result !== null) {
-                response.status(201).send('entity created');
+                response.status(201).send(result);
             } else {
                 response.status(400).send('try again')
             }
@@ -71,8 +71,38 @@ module.exports = (db) => {
   }
 
   let deleteAlbum = (request, response) => {
-    console.log(request.params);
     db.users.deleteAlbum(request.params, (err, result) => {
+        if (err) {
+            console.log(err);
+            response.status(400).send('try again')
+        } else {
+                if (result !== null) {
+                response.status(200).send('entity deleted');
+            } else {
+                response.status(400).send('try again')
+            }
+        }
+    })
+  }
+
+    let newAlbumPicture = (request, response) => {
+    db.users.newAlbumPicture(request.body, (err, result) => {
+        if (err) {
+            console.log(err);
+            console.log(request.body);
+            response.status(400).send('try again')
+        } else {
+                if (result !== null) {
+                response.status(201).send('entity created');
+            } else {
+                response.status(400).send('try again')
+            }
+        }
+    })
+  }
+
+    let deletePicture = (request, response) => {
+    db.users.deletePicture(request.body, (err, result) => {
         if (err) {
             console.log(err);
             response.status(400).send('try again')
@@ -95,6 +125,8 @@ module.exports = (db) => {
     object,
     newAlbum,
     deleteAlbum,
+    newAlbumPicture,
+    deletePicture,
   }
 
 };

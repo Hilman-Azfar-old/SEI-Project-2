@@ -7,15 +7,21 @@ import PropTypes from 'prop-types'
 import CreateAlbum from '../CreateAlbum/CreateAlbum'
 import AlbumCard from '../AlbumCard/AlbumCard'
 import AlbumPics from '../AlbumPics/AlbumPics'
+import AddPicture from '../AddPicture/AddPicture'
 
 class EditAlbum extends React.Component {
   constructor(props){
     super(props)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleAddPicture = this.handleAddPicture.bind(this)
   }
 
   handleDelete(e){
     this.props.onDelete(e)
+  }
+
+  handleAddPicture(e){
+    this.props.onAddPicture(e)
   }
 
   render() {
@@ -47,17 +53,22 @@ class EditAlbum extends React.Component {
         {this.props.albums.map((item, index) => (
             <Route key={index} path={`/user/${this.props.user}/dashboard/${item.album}`}>
                 <Col xs={12}>
-                    <h3>Pics for album</h3>
+                    <h2>{item.album}</h2>
                 </Col>
                 <AlbumPics data={item}
-                           user={this.props.user}/>
-                <Col xs={12}>
+                           user={this.props.user}
+                           onDeletePicture={this.props.onDeletePicture}/>
+                <div style={{position:"fixed", top: "80px", right: "30px", width: "60px"}}>
                 <Link to={`/user/${this.props.user}/dashboard`}>
-                    <Button variant="primary">
-                        Back
+                    <Button variant="secondary" block>
+                        X
                     </Button>
                 </Link>
-                </Col>
+                </div>
+                <AddPicture value={this.props.pictureValue}
+                            picData={item}
+                            onTitleChange={this.props.onPicTitleChange}
+                            onAddPicture={this.handleAddPicture}/>
             </Route>
         ))}
         </Switch>

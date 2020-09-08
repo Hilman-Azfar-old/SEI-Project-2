@@ -1,5 +1,6 @@
 import { hot } from 'react-hot-loader';
 import React from 'react';
+import { Navbar } from 'react-bootstrap'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import ProtectedRoute from './Auth/ProtectedRoute'
 

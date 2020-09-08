@@ -13,11 +13,11 @@ module.exports = (dbPoolInstance) => {
     const query = `SELECT img_url
                    FROM images
                    WHERE album_id =
-                   ( SELECT id
+                   ( SELECT album_id
                      FROM gallery
                      WHERE album = $2
                      AND user_id =
-                     ( SELECT id
+                     ( SELECT user_id
                        FROM users
                        WHERE name = $1
                      )
@@ -42,7 +42,7 @@ module.exports = (dbPoolInstance) => {
     const values = [params.user,
                     params.pass];
 
-    const query = `SELECT id
+    const query = `SELECT user_id
                    FROM users
                    WHERE name = $1
                    AND password = $2`
@@ -68,7 +68,7 @@ module.exports = (dbPoolInstance) => {
                    (name, password)
                    VALUES
                    ($1, $2)
-                   RETURNING id`
+                   RETURNING user_id`
 
     dbPoolInstance.query(query, values, (error, queryResult) => {
         if (error){
@@ -110,15 +110,17 @@ module.exports = (dbPoolInstance) => {
   let object = (params, callback) => {
     const values = [params.user];
 
-    const query = `SELECT gallery.album,
-                   STRING_AGG( images.img_url, ',' ) urls
+    const query = `SELECT album_id, album,
+                   ARRAY_AGG( album || ':' || img_url || ':' || pos
+                      ORDER BY pos
+                   ) urls
                    FROM users
                    INNER JOIN gallery
-                   ON users.id = gallery.user_id
+                   USING (user_id)
                    LEFT JOIN images
-                   ON gallery.id = images.album_id
+                   USING (album_id)
                    WHERE users.name = $1
-                   GROUP BY gallery.album`
+                   GROUP BY gallery.album_id;`
 
     dbPoolInstance.query(query, values, (error, queryResult) => {
         if (error){
@@ -140,15 +142,15 @@ module.exports = (dbPoolInstance) => {
     const query = `INSERT INTO gallery
                    (user_id, album)
                    VALUES
-                   ((SELECT id FROM users WHERE name = $1), $2)
-                   RETURNING id`
+                   ((SELECT user_id FROM users WHERE name = $1), $2)
+                   RETURNING album_id`
 
     dbPoolInstance.query(query, values, (error, queryResult) => {
         if (error){
             callback(error, null)
         } else {
             if (queryResult.rows.length > 0) {
-                callback(null, queryResult.rows)
+                callback(null, queryResult.rows[0])
             } else {
                 callback(null, null)
             }
@@ -158,13 +160,55 @@ module.exports = (dbPoolInstance) => {
 
     let deleteAlbum = (params, callback) => {
     const values = [params.user,
-                    params.album];
+                    params.album_id];
+
+    const values2 = [params.album_id]
 
     const query = `DELETE FROM gallery
                    WHERE user_id =
-                   (SELECT id FROM users WHERE name = $1)
-                   AND album = $2
-                   RETURNING id`
+                   (SELECT user_id FROM users WHERE name = $1)
+                   AND album_id = $2
+                   RETURNING album_id`
+
+    const query2 = `DELETE FROM images
+                   WHERE album_id = $1`
+
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            dbPoolInstance.query(query2, values2, (error, queryResult) => {
+                if (error) {
+                    callback(error, null)
+                } else {
+                    callback(null, queryResult)
+                }
+            })
+        }
+    })
+  }
+
+    let newAlbumPicture = (params, callback) => {
+    const values = [params.username,
+                    params.title,
+                    params.img_url,
+                    params.pos];
+
+    const query = `INSERT INTO images
+                   (album_id, img_url, pos)
+                   VALUES
+                   (
+                        (
+                          SELECT album_id FROM gallery
+                          WHERE user_id =
+                            (
+                              SELECT user_id FROM users
+                              WHERE name = $1
+                            )
+                          AND album = $2
+                        ), $3, $4
+                    )
+                   RETURNING images_id`
 
     dbPoolInstance.query(query, values, (error, queryResult) => {
         if (error){
@@ -179,6 +223,25 @@ module.exports = (dbPoolInstance) => {
     })
   }
 
+  let deletePicture = (body, callback) => {
+    const values = [body.albumId,
+                    body.pos];
+
+
+    const query = `DELETE FROM images
+                   WHERE album_id = $1
+                   AND pos = $2`
+
+    dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error){
+            callback(error, null)
+        } else {
+            callback(null, queryResult)
+        }
+    })
+  }
+
+
   return {
     getAlbum,
     validate,
@@ -187,5 +250,7 @@ module.exports = (dbPoolInstance) => {
     object,
     newAlbum,
     deleteAlbum,
+    newAlbumPicture,
+    deletePicture,
   };
 };
