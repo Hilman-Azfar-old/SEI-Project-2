@@ -1,6 +1,5 @@
 import React from 'react';
 import { Row, Col, Container, Form, Button } from 'react-bootstrap'
-import Logout from '../Logout/Logout'
 
 class CreateAlbum extends React.Component {
   constructor(props){

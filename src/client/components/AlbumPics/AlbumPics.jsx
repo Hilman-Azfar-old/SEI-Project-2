@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import { Row, Col, Button } from 'react-bootstrap'
 
 import EditImageCard from '../EditImageCard/EditImageCard'
 import pic_1 from '../Collage/Images/card_pic_01.png'

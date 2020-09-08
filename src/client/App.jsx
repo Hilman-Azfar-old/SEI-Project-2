@@ -1,15 +1,12 @@
 import { hot } from 'react-hot-loader';
 import React from 'react';
-import { Navbar } from 'react-bootstrap'
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import ProtectedRoute from './Auth/ProtectedRoute'
 
 import Landing from './components/Landing/Landing'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 import Dashboard from './components/Dashboard/DashboardV2'
-
-
 
 function App() {
     return (

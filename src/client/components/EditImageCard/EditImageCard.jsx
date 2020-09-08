@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Col,
-         Overlay,
          Button,
          Popover,
          OverlayTrigger } from 'react-bootstrap'

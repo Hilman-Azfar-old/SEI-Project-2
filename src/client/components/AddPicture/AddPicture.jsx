@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 import { Row, Col, Container, Form, Button } from 'react-bootstrap'
-import Logout from '../Logout/Logout'
 
 class AddPicture extends React.Component {
   constructor(props) {

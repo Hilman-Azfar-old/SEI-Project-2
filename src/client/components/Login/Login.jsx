@@ -1,7 +1,6 @@
 import React from 'react';
 import auth from '../../Auth/Auth'
 import { Row, Col,
-         Container,
          Form, Button,
          Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'

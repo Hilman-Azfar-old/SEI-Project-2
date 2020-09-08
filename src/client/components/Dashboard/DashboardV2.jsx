@@ -1,13 +1,7 @@
 import React from 'react';
-import { Route, Switch, Link } from 'react-router-dom'
-import { InputGroup,
-         FormControl,
-         Col,
-         Button,
-         Row,
+import { Button,
          Navbar,
          Container, } from 'react-bootstrap'
-import ProtectedRoute from '../../Auth/ProtectedRoute'
 
 import EditAlbum from '../EditAlbum/EditAlbum'
 import Logout from '../Logout/Logout'
@@ -220,7 +214,7 @@ class Dashboard extends React.Component {
 
   render() {
     return (
-        <div>
+        <React.Fragment>
             <Navbar bg="dark" variant="dark" fixed="top">
                 <Navbar.Brand href="#home">
                     Gallery
@@ -250,7 +244,7 @@ class Dashboard extends React.Component {
                      onDeletePicture={this.handleDeletePicture}
                      pictureValue={this.state.newPicture}/>
         </Container>
-        </div>
+        </React.Fragment>
     );
   }
 }
