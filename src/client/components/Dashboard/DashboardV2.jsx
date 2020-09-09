@@ -19,6 +19,9 @@ class Dashboard extends React.Component {
         albums: [],
         newTitle: '',
         newPicture: '',
+        isProcess: false,
+        file: null,
+        filename: null,
     }
 
     this.create = this.create.bind(this);
@@ -29,6 +32,7 @@ class Dashboard extends React.Component {
     this.handlePicTitle = this.handlePicTitle.bind(this);
     this.handleAddPicture = this.handleAddPicture.bind(this);
     this.handleDeletePicture = this.handleDeletePicture.bind(this);
+    this.handleFile = this.handleFile.bind(this);
   }
 
   componentDidMount() {
@@ -126,14 +130,19 @@ class Dashboard extends React.Component {
     })
   }
 
-  handleClick(){
-    console.log(this.state);
-  }
-
   handlePicTitle(e) {
     this.setState({
         newPicture: e.target.value,
     })
+  }
+
+  handleFile(e){
+    let newFile = e.target.files[0];
+    this.setState(prevState=>({
+        isProcess: !prevState.isProcess,
+        file: newFile,
+        filename: newFile.name
+    }))
   }
 
   async handleAddPicture(e){
@@ -141,24 +150,51 @@ class Dashboard extends React.Component {
     let pos = parseInt(e.target.pos) + 1;
     let album = e.target.album;
 
-    const url = `http://localhost:3000/api/new/picture`
+    const url2 = `http://localhost:3000/api/new/picture`
 
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            username: this.state.user,
-            title: album,
-            img_url: this.state.newPicture,
-            pos: pos,
-        })
-    };
+    /* Api fetch
+
+    Upload to cloudinary
+    if ok
+    add res url to db
+
+    if fail throw error
+
+    */
+    const url = `https://api.cloudinary.com/v1_1/dk0bjhiu9/image/upload`
 
     try {
-        if (this.state.newPicture === '') {
+        if (this.state.file === null) {
             throw new Error('Enter an image url')
         }
-        let response = await fetch(url, requestOptions)
+
+        const data = new FormData();
+        data.append('file', this.state.file)
+        data.append('upload_preset', 'project_2')
+
+        let res = await fetch(url, {
+            method: "POST",
+            body : data,
+        })
+
+        const uploadRes = await res.json()
+
+        this.setState({
+            newPicture: uploadRes.public_id
+        })
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: this.state.user,
+                title: album,
+                img_url: this.state.newPicture,
+                pos: pos,
+            })
+        };
+
+        let response = await fetch(url2, requestOptions)
         if (response.status == '201') {
             this.setState(prevState=>({
             albums: prevState.albums.map(obj=>{
@@ -167,6 +203,8 @@ class Dashboard extends React.Component {
                 }
                 return obj
             }),
+            file: null,
+            filename: null,
             newPicture: '',
             }))
         } else {
@@ -219,9 +257,6 @@ class Dashboard extends React.Component {
                 <Navbar.Brand href="#home">
                     Gallery
                 </Navbar.Brand>
-                <Button onClick={this.handleClick}>
-                State Checker
-                </Button>
                 <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text className="mr-3">
                     Signed in as: {this.state.user}
@@ -242,7 +277,10 @@ class Dashboard extends React.Component {
                      onPicTitleChange={this.handlePicTitle}
                      onAddPicture={this.handleAddPicture}
                      onDeletePicture={this.handleDeletePicture}
-                     pictureValue={this.state.newPicture}/>
+                     pictureValue={this.state.newPicture}
+
+                     onHandleFile={this.handleFile}
+                     filename={this.state.filename}/>
         </Container>
         </React.Fragment>
     );

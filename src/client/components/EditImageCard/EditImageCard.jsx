@@ -13,11 +13,12 @@ function EditImageCard(props) {
         event.target.albumId = props.albumId
         props.onDeletePicture(event)
     };
+
     return (
         <OverlayTrigger
           trigger="click"
           placement="top"
-          rootClose="true"
+          rootClose={true}
           overlay={
             <Popover id={`${props.uid[0]}-${props.uid[2]}`}>
               <Popover.Content>

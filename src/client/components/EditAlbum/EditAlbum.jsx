@@ -54,9 +54,11 @@ class EditAlbum extends React.Component {
                 <Col xs={12}>
                     <h2>{item.album}</h2>
                 </Col>
+                <Row>
                 <AlbumPics data={item}
                            user={this.props.user}
                            onDeletePicture={this.props.onDeletePicture}/>
+                </Row>
                 <div style={{position:"fixed", top: "80px", right: "30px", width: "60px"}}>
                 <Link to={`/user/${this.props.user}/dashboard`}>
                     <Button variant="secondary" block>
@@ -67,7 +69,10 @@ class EditAlbum extends React.Component {
                 <AddPicture value={this.props.pictureValue}
                             picData={item}
                             onTitleChange={this.props.onPicTitleChange}
-                            onAddPicture={this.handleAddPicture}/>
+                            onAddPicture={this.handleAddPicture}
+
+                            onHandleFile={this.props.onHandleFile}
+                            filename={this.props.filename}/>
             </Route>
         ))}
         </Switch>

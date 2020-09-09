@@ -10,7 +10,7 @@ class Auth {
         // call db and validate
         // using ajax
         // if validated get session cookie
-        const url = `http://localhost:3000/api/login/${obj.username}/${sha256(obj.password)}`
+        const url = `/api/login/${obj.username}/${sha256(obj.password)}`
         try {
             let response = await fetch(url)
             if (response.status == '200') {
@@ -27,7 +27,7 @@ class Auth {
     }
 
     async register(obj, cb) {
-        const url = `http://localhost:3000/api/new/user`
+        const url = `/api/new/user`
 
         const requestOptions = {
             method: 'POST',

@@ -4,7 +4,10 @@ import { Row, Col, Container, Form, Button } from 'react-bootstrap'
 class AddPicture extends React.Component {
   constructor(props) {
     super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.state = {
+
+    }
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(e){
@@ -18,12 +21,19 @@ class AddPicture extends React.Component {
     return (
         <Container className="fixed-bottom p-4">
           <Form onSubmit={this.handleSubmit}>
-          <Row>
-          <Col sm={{span:6, offset: 2}}>
-                <Form.Control
-                value={this.props.value}
-                onChange={this.props.onTitleChange}
-                placeholder="Add a new picture"/>
+          <Row className="mb-2">
+          <Col sm={{span:6, offset: 2}} className="text-left">
+            <Form.File id="formcheck-api-custom" custom>
+              <Form.File.Input onChange={this.props.onHandleFile}
+                               isValid={this.props.filename ? true : false} />
+              <Form.File.Label data-browse="Browse">
+                {this.props.filename ? this.props.filename : "Select a file"}
+              </Form.File.Label>
+              <Form.Control.Feedback type="invalid"
+                                     tooltip={true}>
+                                        Add a file to upload
+              </Form.Control.Feedback>
+            </Form.File>
           </Col>
           <Col sm={2}>
               <Button variant="primary"
@@ -33,6 +43,7 @@ class AddPicture extends React.Component {
               </Button>
           </Col>
           </Row>
+
           </Form>
         </Container>
     );
@@ -40,3 +51,13 @@ class AddPicture extends React.Component {
 }
 
 export default AddPicture;
+
+          // <Row>
+          // <Col sm={{span:6, offset: 2}}>
+          //       <Form.Control
+          //       value={this.props.value}
+          //       onChange={this.props.onTitleChange}
+          //       placeholder="Add a new picture"/>
+          // </Col>
+
+          // </Row>
