@@ -36,7 +36,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    const url = `http://localhost:3000/api/${this.state.user}/object`
+    const url = `/api/${this.state.user}/object`
     fetch(url)
     .then(res=>res.json())
     .then(res=>{
@@ -59,7 +59,7 @@ class Dashboard extends React.Component {
 
   async create(e) {
     e.preventDefault();
-    const url = `http://localhost:3000/api/new/album`
+    const url = `/api/new/album`
 
     const requestOptions = {
         method: 'POST',
@@ -104,7 +104,7 @@ class Dashboard extends React.Component {
   async delete(e) {
     e.preventDefault();
     let {album, album_id} = e.target.name
-    const url = `http://localhost:3000/api/${this.state.user}/album/${album_id}`
+    const url = `/api/${this.state.user}/album/${album_id}`
     // need to delete from images too
     const requestOptions = {
         method: 'DELETE',
@@ -150,7 +150,7 @@ class Dashboard extends React.Component {
     let pos = parseInt(e.target.pos) + 1;
     let album = e.target.album;
 
-    const url2 = `http://localhost:3000/api/new/picture`
+    const url2 = `/api/new/picture`
 
     /* Api fetch
 
@@ -219,7 +219,7 @@ class Dashboard extends React.Component {
   async handleDeletePicture(e){
     let [album, picture, pos] = e.target.value.split(',');
     let albumId = e.target.albumId;
-    const url = `http://localhost:3000/api/del/picture`
+    const url = `/api/del/picture`
 
     const requestOptions = {
         method: 'DELETE',
