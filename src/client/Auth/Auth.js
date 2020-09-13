@@ -13,6 +13,7 @@ class Auth {
         const url = `/api/login/${obj.username}/${sha256(obj.password)}`
         try {
             let response = await fetch(url)
+            console.log(response);
             if (response.status == '200') {
                 this.authenticated = true;
                 this.currentUser = obj.username;

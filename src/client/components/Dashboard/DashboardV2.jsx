@@ -28,7 +28,6 @@ class Dashboard extends React.Component {
     this.update = this.update.bind(this);
     this.delete = this.delete.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
     this.handlePicTitle = this.handlePicTitle.bind(this);
     this.handleAddPicture = this.handleAddPicture.bind(this);
     this.handleDeletePicture = this.handleDeletePicture.bind(this);

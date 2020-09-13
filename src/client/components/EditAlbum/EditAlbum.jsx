@@ -33,7 +33,8 @@ class EditAlbum extends React.Component {
          lg={{span:10, offset:1}}>
         <Switch>
         <Route exact path={`/user/${this.props.user}/dashboard`}>
-            {this.props.albums.map((item, index) => (
+            {this.props.albums.length ?
+                ( this.props.albums.map((item, index) => (
                     <Col key={index} xs={{span:10, offset:1}}
                                      sm={{span:4, offset:0}}
                                      md={{span:3, offset:0}}
@@ -44,7 +45,7 @@ class EditAlbum extends React.Component {
                     </Link>
                     </Col>
 
-            ))}
+            )) ) : <h3> Start by adding a new album </h3>}
             <CreateAlbum onTitleChange={this.props.onTitleChange}
                          onCreate={this.props.onCreate}
                          value={this.props.value}/>
