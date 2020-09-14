@@ -35,7 +35,7 @@ I am a photographer who needs a website to showcase my work.
 # ![](https://github.com/Hilman-Azfar/SEI-Project-2/blob/master/Screen%20Shot%202020-09-14%20at%2010.30.21%20AM.png) 
 
 ## ERD
-
+# ![](https://github.com/Hilman-Azfar/SEI-Project-2/blob/master/Screen%20Shot%202020-09-14%20at%2010.53.28%20AM.png) 
 
 ### References
 Refer to the git book on user stories: [https://wdi-sg.github.io/gitbook-2018/01-workflow/user-stories-wireframing/readme.html](https://wdi-sg.github.io/gitbook-2018/01-workflow/user-stories-wireframing/readme.html)
