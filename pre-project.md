@@ -29,7 +29,7 @@ I am a photographer who needs a website to showcase my work.
    
 
 ## User Flow
-# ![](Screen Shot 2020-09-14 at 10.30.32 AM.png) 
+# ![](https://github.com/Hilman-Azfar/SEI-Project-2/blob/master/Screen%20Shot%202020-09-14%20at%2010.30.32%20AM.png) 
 
 ## ERD
 Make an ERD for your app.
